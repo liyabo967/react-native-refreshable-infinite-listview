@@ -2,6 +2,10 @@
 A pull-down-refresh and pull-up-loadmore listview for IOS and Android
 
 
+## Usage
+
+### Example
+```js
 'use strict';
 
 const React = require('react')
@@ -45,7 +49,7 @@ const RefreshExample = React.createClass({
     return data
   },
   //pull-up-loadmore
-  _onEndReached () {
+  _onInfinite () {
     if (!this.state.loading) {
       this.setState({loading: true})
       setTimeout(() => {
@@ -69,7 +73,7 @@ const RefreshExample = React.createClass({
       <RefreshableInfiniteListView
         style={styles.listview}
         dataSource={this.state.dataSource}
-        onInfinite={this._onEndReached}
+        onInfinite={this._onInfinite}
         renderRow={this._renderRow}
         onRefresh={this._onRefresh}
         loadEnd={this.state.loadEnd}
@@ -91,3 +95,41 @@ const RefreshExample = React.createClass({
   }
 })
 module.exports = RefreshExample
+```
+
+- `onRefresh:func`
+```js
+//pull-down-refresh
+  _onRefresh () {
+    this.setState({isRefreshing: true})
+    setTimeout(() => {
+      this.setState({
+        isRefreshing: false,
+        loadEnd: false,
+        dataSource: ds.cloneWithRows(initData)
+      })
+      page = 0
+      rowData = initData
+    }, 1000)
+  }
+```
+
+- `onInfinite:func`
+```js
+//pull-up-loadmore
+  _onInfinite () {
+    if (!this.state.loading) {
+      this.setState({loading: true})
+      setTimeout(() => {
+        console.log('page-------------', page)
+        if (page === 3) {
+          this.setState({loadEnd: true, loading: false})
+        } else {
+          var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+          rowData = rowData.concat(thisObj._genData())
+          this.setState({loading: false, dataSource: ds.cloneWithRows(rowData)})
+        }
+      }, 1000)
+    }
+  }
+```

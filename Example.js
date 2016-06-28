@@ -41,7 +41,7 @@ const RefreshExample = React.createClass({
     return data
   },
 
-  _onEndReached () {
+  _onInfinite () {
     if (!this.state.loading) {
       this.setState({loading: true})
       setTimeout(() => {
@@ -65,7 +65,7 @@ const RefreshExample = React.createClass({
       <RefreshableInfiniteListView
         style={styles.listview}
         dataSource={this.state.dataSource}
-        onInfinite={this._onEndReached}
+        onInfinite={this._onInfinite}
         renderRow={this._renderRow}
         onRefresh={this._onRefresh}
         loadEnd={this.state.loadEnd}
