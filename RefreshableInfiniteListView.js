@@ -24,20 +24,13 @@ const RefreshableInfiniteListView = React.createClass({
       loading: false
     }
   },
-  shouldComponentUpdate () {
-    console.log('shouldComponentUpdate', this.props.loadEnd)
-    return true
-    // if (this.props.loadEnd) {
-    //   this.setState({loadEnd: this.props.loadEnd})
-    // }
-  },
   componentDidMount () {
     this.setState({isRefreshing: true})
     this.props.onRefresh()
     this.setState({isRefreshing: false})
   },
   _renderFooter () {
-    if (this.state.loadEnd) {
+    if (this.props.loadEnd) {
       footerText = 'no more data'
     } else {
       footerText = 'loading more'
